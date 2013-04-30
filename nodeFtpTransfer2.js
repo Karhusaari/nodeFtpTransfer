@@ -18,6 +18,13 @@ fs.watch("FTP", function(event, filename){
 			var file = fs.readdir("FTP/" + filename, function(error, files){
 				if(!error && files.length > 0){
 					console.log("Transferring: " + files);
+
+					fs.readFile("FTP/" + filename + "/" + files, "binary", function(error, data){
+						var buffer = new Buffer(data, "binary");
+						ftp.put( "/usr/lpp/pub/web/APPS/ADS/TST/" + filename, buffer, function(err, res){
+							console.log(res);
+						});
+					});
 					//fs.unlinkSync("FTP/" + filename + "/" + files);
 					console.log("Transfer Complete");
 				}
