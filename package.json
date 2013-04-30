@@ -1,0 +1,8 @@
+{
+	"name" : "Node Test Server",
+	"author" : "Doug Bjornholm",
+	"dependencies" : {
+
+	},
+	"main" : "nodeServer.js"
+}
