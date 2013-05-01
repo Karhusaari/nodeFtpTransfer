@@ -8,16 +8,19 @@ var ftp = new Ftp({
 	pass: config.password
 });
 
-
 ftp.raw.cwd("/usr/lpp/pub/web/APPS/ADS/TST/SCRIPT", function(err, files){
     if (err){
     	return console.error(err);
     }else{
     	var dir;
-    	ftp.raw.pwd(function(err, pwd){
-    		console.log("\nPWD: " + pwd.text);
-    		dir = pwd.text;
-    	});
+    	/*ftp.auth(config.username, config.password, function(err, pwd){
+            console.log("\nAUTH: " + pwd.text);
+        });*/
+        console.log("connected: " + ftp.features)
+        ftp.raw.pwd(function(err, pwd){
+            console.log("\nPWD: " + pwd.text);
+            dir = pwd.text;
+        });
 
     	ftp.raw.type("I", function(err, type){
     		console.log("Type Mode: " + type.text);
