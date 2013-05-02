@@ -13,10 +13,12 @@ ftp.raw.cwd("/usr/lpp/pub/web/APPS/ADS/TST/SCRIPT", function(err, files){
     	return console.error(err);
     }else{
     	var dir;
-    	/*ftp.auth(config.username, config.password, function(err, pwd){
+    	ftp.auth(config.username, config.password, function(err, pwd){
             console.log("\nAUTH: " + pwd.text);
-        });*/
-        console.log("connected: " + ftp.features)
+        });
+
+        console.log("connected: " + ftp.features);
+        
         ftp.raw.pwd(function(err, pwd){
             console.log("\nPWD: " + pwd.text);
             dir = pwd.text;
