@@ -18,12 +18,31 @@ fs.watch("FTP", function(event, filename){
 			var file = fs.readdir("FTP/" + filename, function(error, files){
 				if(!error && files.length > 0){
 					console.log("Transferring: " + files);
+					var toUpload = "/usr/lpp/pub/web/APPS/ADS/TST/" + filename + "/" + files;
+
+					console.log("Upload: " + toUpload);
+
+
+
+					/* Storing a file in the FTP server, using streams
+					var originalData = Fs.createReadStream());
+					originalData.pause();
+
+					ftp.getPutSocket("/remote_folder/sourceFileCopy.txt"), function(err, socket) {
+					    if (err) return console.error(err);
+					    originalData.pipe(socket); // Transfer from source to the remote file
+					    originalData.resume();
+					});
+					*/
+
 
 					fs.readFile("FTP/" + filename + "/" + files, "binary", function(error, data){
 						var buffer = new Buffer(data, "binary");
-						ftp.put( "/usr/lpp/pub/web/APPS/ADS/TST/" + filename, buffer, function(err, res){
+						
+						ftp.put( toUpload, buffer, function(err, res){
 							console.log(res);
 						});
+						
 					});
 					//fs.unlinkSync("FTP/" + filename + "/" + files);
 					console.log("Transfer Complete");

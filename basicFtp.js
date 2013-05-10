@@ -9,16 +9,74 @@ var ftp = new Ftp({
 });
 
 ftp.raw.cwd("/usr/lpp/pub/web/APPS/ADS/TST/SCRIPT", function(err, files){
-    if (err){
-    	return console.error(err);
+  if (err){
+   return console.error(err);
+ }else{
+  ftp.raw.type("A", function(err, type){
+    console.log("Type Mode: " + type.text);
+    if(err){
+      console.log(err);
     }else{
-    	var dir;
-    	ftp.auth(config.username, config.password, function(err, pwd){
+      ftp.raw.pasv(function(err, pasv){
+        if(err){
+          console.log(err);
+        }else{
+          console.log("Passive Mode: " + pasv.text);
+          ftp.raw.site("SBD=(ISO8859-1)",function(err, type){
+            console.log("SITE SBD: " + type.code);
+            if(type.code == 200){
+              var originalData = fs.createReadStream( __dirname + "/FTP/SCRIPT/initDatepickers.js" );
+              originalData.pause();
+
+              ftp.getPutSocket("/usr/lpp/pub/web/APPS/ADS/TST/SCRIPT/initDatepickers.js", function(err, socket) {
+                if (err) return console.error(err);
+                originalData.pipe(socket); // Transfer from source to the remote file
+                originalData.resume();
+              });
+
+            }
+     
+          });
+        }
+      });
+    }
+  });
+
+
+
+
+
+
+
+
+
+
+    	//var toUpload = "/usr/lpp/pub/web/APPS/ADS/TST/";
+
+/*
+        
+
+fs.readFile(__dirname + "/FTP/SCRIPT/initDatepickers.js", function(error, data){
+            var buffer = new Buffer(data, "ascii");
+            
+            ftp.put( "", buffer, function(err, res){
+                console.log(res);
+            });
+
+            console.log(data.toString());
+        });
+
+
+        
+        /*
+        var dir;
+        ftp.auth(config.username, config.password, function(err, pwd){
+            console.log("connected");
             console.log("\nAUTH: " + pwd.text);
         });
 
-        console.log("connected: " + ftp.features);
-        
+
+
         ftp.raw.pwd(function(err, pwd){
             console.log("\nPWD: " + pwd.text);
             dir = pwd.text;
@@ -42,12 +100,12 @@ ftp.raw.cwd("/usr/lpp/pub/web/APPS/ADS/TST/SCRIPT", function(err, files){
     		if(err){
     			console.log(err);
     		}else{
-    			var fileNames = data.map(function(file) {
-              return file ? file.name : null;
-          });
+    			console.log(data.toString());
     		}
     	});
-    }
+        
+*/
+}
 });
 
 
